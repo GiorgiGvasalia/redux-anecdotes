@@ -11,7 +11,7 @@ const AnecdotesForm = () => {
 
     function handleAdd(event) {
         event.preventDefault()
-        console.log(event.target.anecdote.value)
+    
         dispatch({
             type: 'NEW_ANECDOTE',
             payload: {

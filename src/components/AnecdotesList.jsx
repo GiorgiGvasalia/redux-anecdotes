@@ -1,13 +1,21 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+
 const AnecdotesList = () => {
-    const anecdotes = useSelector(state => state);
+   
     const dispatch = useDispatch();
 
     const vote = (id) => {
         dispatch({ type: 'PLUS_VOTE', payload: { id } });
     };
+
+    const anecdotes = useSelector(state => {
+        if(state.filter === 'ALL'){
+            return state.anecdotes;
+        }
+        return state.anecdotes.filter(anecdote => anecdote.content.includes(state.filter)); 
+    });
 
     return (
         <>
