@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { plusVote } from '../reducers/anecdoteReducer';
 
 const AnecdotesList = () => {
+
    
     const dispatch = useDispatch();
 
@@ -18,10 +19,16 @@ const AnecdotesList = () => {
         return state.anecdotes.filter(anecdote => anecdote.content.includes(state.filter)); 
     }));
 
+    if (anecdotes.length === 0) {
+        return <p>No anecdotes.</p>;
+    }
+    
+
+
     return (
         <>
             <h2>Anecdotes</h2>
-            {anecdotes.map(anecdote =>
+            {!anecdotes ? <p>no anecdotes</p> : anecdotes.map(anecdote =>
                 <div key={anecdote.id}>
                     <div>
                         {anecdote.content}
