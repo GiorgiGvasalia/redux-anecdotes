@@ -28,8 +28,8 @@ const AnecdotesList = () => {
     return (
         <>
             <h2>Anecdotes</h2>
-            {!anecdotes ? <p>no anecdotes</p> : anecdotes.map(anecdote =>
-                <div key={anecdote.id}>
+            {anecdotes.map((anecdote, index) =>
+                <div key={index}>
                     <div>
                         {anecdote.content}
                     </div>

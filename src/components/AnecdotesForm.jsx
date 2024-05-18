@@ -1,35 +1,36 @@
-import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createAnecdote } from '../reducers/anecdoteReducer';
+import anecdoteService from '../services/anecdoteService';
 
 const AnecdotesForm = () => {
-    const [content, setContent] = useState(''); 
+
     const dispatch = useDispatch();
-    
-    function getId() {
-        return Math.floor(Math.random() * 10000)
-    }
-    
-    function handleAdd(event) {
+
+
+    const addAnecdote = async (event) => {
         event.preventDefault();
     
+        const content = event.target.anecdote.value;
+        const newAnecdote = await anecdoteService.addNew(content);
         dispatch(createAnecdote({
-            content: content, 
-            id: getId(),
-            votes: 0
+            id: newAnecdote.id,
+            content: newAnecdote.content,
+            votes: newAnecdote.votes
         }));
-        setContent(''); 
+        event.target.anecdote.value = '';
     }
+    
+
+
+
 
     return (
         <>
             <h2>create new</h2>
-            <form onSubmit={handleAdd}>
+            <form onSubmit={addAnecdote}>
                 <div>
-                    <input 
-                        name='anecdote' 
-                        value={content} 
-                        onChange={(e) => setContent(e.target.value)} 
+                    <input
+                        name='anecdote'
                     />
                 </div>
                 <button type='submit'>create</button>
