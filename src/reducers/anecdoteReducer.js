@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit";
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -5,43 +7,37 @@ const anecdotesAtStart = [
   'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
   'Premature optimization is the root of all evil.',
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
+];
 
-const getId = () => (100000 * Math.random()).toFixed(0)
-
-const asObject = (anecdote) => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0
-  }
+function getId() {
+  return (100000 * Math.random()).toFixed(0);
 }
 
 
+const initialState = anecdotesAtStart.map(anecdote => ({
+  content: anecdote,
+  id: getId(),
+  votes: 0
+}));
 
-const initialState = anecdotesAtStart.map(asObject)
-
-const reducer = (state = initialState, action) => {
-  
-  
-  switch(action.type) {
-    case 'NEW_ANECDOTE':
-      return [...state, action.payload];
-    case 'PLUS_VOTE':
-      const updatedAnecdotes = state.map(anecdote => {
-        if (anecdote.id === action.payload.id) {
-          return {
-            ...anecdote,
-            votes: anecdote.votes + 1
-          };
-        }
-        return anecdote;
-      });
-      return updatedAnecdotes;
-    default:
-      return state;
+const anecdoteSlice = createSlice({
+  name: 'anecdotes',
+  initialState,
+  reducers: {
+    createAnecdote: (state, action) => {
+      const { content, id } = action.payload;
+      state.push({ content, id, votes: 0 });
+    },
+    plusVote: (state, action) => {
+      const anecdote = state.find(item => item.id === action.payload.id);
+      if (anecdote) {
+        anecdote.votes++;
+      }
+    }
   }
-};
+});
 
 
-export default reducer
+
+export const { createAnecdote, plusVote } = anecdoteSlice.actions;
+export default anecdoteSlice.reducer;

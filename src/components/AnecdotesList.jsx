@@ -1,21 +1,22 @@
+// AnecdotesList.js
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
+import { plusVote } from '../reducers/anecdoteReducer';
 
 const AnecdotesList = () => {
    
     const dispatch = useDispatch();
 
     const vote = (id) => {
-        dispatch({ type: 'PLUS_VOTE', payload: { id } });
+        dispatch(plusVote({ id }));
     };
 
-    const anecdotes = useSelector(state => {
+    const anecdotes = useSelector((state => {
         if(state.filter === 'ALL'){
             return state.anecdotes;
         }
         return state.anecdotes.filter(anecdote => anecdote.content.includes(state.filter)); 
-    });
+    }));
 
     return (
         <>

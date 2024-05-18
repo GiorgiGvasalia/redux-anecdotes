@@ -1,39 +1,41 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { createAnecdote } from '../reducers/anecdoteReducer';
 
 const AnecdotesForm = () => {
-    function getId(){
+    const [content, setContent] = useState(''); 
+    const dispatch = useDispatch();
+    
+    function getId() {
         return Math.floor(Math.random() * 10000)
     }
-
-    const dispatch = useDispatch()
     
-
     function handleAdd(event) {
-        event.preventDefault()
+        event.preventDefault();
     
-        dispatch({
-            type: 'NEW_ANECDOTE',
-            payload: {
-                content: event.target.anecdote.value,
-                id: getId(),
-                votes: 0
-            }
-        })
-        event.target.anecdote.value = '';
-
+        dispatch(createAnecdote({
+            content: content, 
+            id: getId(),
+            votes: 0
+        }));
+        setContent(''); 
     }
-
 
     return (
         <>
             <h2>create new</h2>
             <form onSubmit={handleAdd}>
-                <div><input name='anecdote'/></div>
+                <div>
+                    <input 
+                        name='anecdote' 
+                        value={content} 
+                        onChange={(e) => setContent(e.target.value)} 
+                    />
+                </div>
                 <button type='submit'>create</button>
             </form>
         </>
-    )
+    );
 }
 
-export default AnecdotesForm
+export default AnecdotesForm;
